@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name 		Nube de creaciones
-// @version		1.3
+// @version		1.4
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
@@ -20,12 +20,17 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 			if(typeof wDB != "undefined") wDB.close();
 			location.href = document.getElementsByClassName("i_icon_edit")[0].parentNode.getAttribute("href") + "&tick=true"; 
 		}
+		if (evtobj.keyCode == 66 && evtobj.shiftKey){
+			var imagenes = Array.prototype.slice.call(document.getElementsByClassName("content")[0].getElementsByTagName("img"));
+			imagenes.forEach(function(entry) {
+				if(entry.getAttribute("src").indexOf(".imageshack.us/img") != -1) entry.setAttribute("src", "http://imageshack.com/a/" + entry.getAttribute("src").substring(entry.getAttribute("src").indexOf('.imageshack.us/')+15));
+			}); 
+			document.getElementsByClassName("post")[0].style.background = "#ffc246";
+		}
 	}
 	var wDB;
 	document.onkeydown = teclazo;
 }
-
-
 
 if(location.href.indexOf("https://www.dropbox.com/home/BACKUP/") == 0 && window.name.indexOf("#tid=") == 0){
 	var tid = window.name.split("#tid=")[1];
