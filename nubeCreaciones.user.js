@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name 		Nube de creaciones
+// @version		1.1
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
@@ -13,28 +14,29 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 				subforo += "/" + nav[4].innerHTML
 			}
 			var tid = location.pathname.split("/t")[1].split("-")[0].split("p")[0];
-			window.open("https://www.dropbox.com/account#tid=" + tid + ",subforo=" + subforo, tid); 
+			wDB = window.open("https://www.dropbox.com/home/BACKUP/" + subforo, "#tid=" + tid); 
 		}
 		if (evtobj.keyCode == 66 && evtobj.altKey){
+			if(typeof wDB != "undefined") wDB.close();
 			location.href = document.getElementsByClassName("i_icon_edit")[0].parentNode.getAttribute("href") + "&tick=true"; 
 		}
 	}
+	var wDB;
 	document.onkeydown = teclazo;
 }
 
 
-if(location.href.indexOf("https://www.dropbox.com/account#tid=") == 0){
-	var tid = location.hash.split("#tid=")[1].split(",")[0];
-	var subforo = location.hash.split(",subforo=")[1]
-	var w = open("https://www.dropbox.com/home/BACKUP/" + subforo, tid+"b"); 
+
+if(location.href.indexOf("https://www.dropbox.com/home/BACKUP/") == 0 && window.name.indexOf("#tid=") == 0){
+	var tid = window.name.split("#tid=")[1];
 	var interval = setInterval(function (){
-	   if(w.document.getElementById("new_folder_button")){
+	   if(document.getElementById("new_folder_button")){
 			clearInterval(interval);
-			w.document.getElementById("new_folder_button").click();
-			w.document.getElementsByClassName("editor_field")[0].value = tid;
-			w.document.getElementsByClassName("editor_field")[0].blur();
-			w.location.href += "/" + tid;
-			close();
+			document.getElementById("new_folder_button").click();
+			document.getElementsByClassName("editor_field")[0].value = tid;
+			document.getElementsByClassName("editor_field")[0].blur();
+			window.name = "";
+			location.href += "/" + tid;
 		}
 	}, 100);
 }
