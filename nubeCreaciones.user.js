@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name 		Nube de creaciones
-// @version		1.1
+// @version		1.2
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
@@ -32,9 +32,16 @@ if(location.href.indexOf("https://www.dropbox.com/home/BACKUP/") == 0 && window.
 	var interval = setInterval(function (){
 	   if(document.getElementById("new_folder_button")){
 			clearInterval(interval);
-			document.getElementById("new_folder_button").click();
-			document.getElementsByClassName("editor_field")[0].value = tid;
-			document.getElementsByClassName("editor_field")[0].blur();
+			var creada = false;
+			var carpetas = Array.prototype.slice.call(document.getElementsByClassName("filename-link"));
+			carpetas.forEach(function(entry) {
+				if(entry.innerHTML == tid) creada = true;
+			});
+			if(!creada){
+				document.getElementById("new_folder_button").click();
+				document.getElementsByClassName("editor_field")[0].value = tid;
+				document.getElementsByClassName("editor_field")[0].blur();
+			}
 			window.name = "";
 			location.href += "/" + tid;
 		}
