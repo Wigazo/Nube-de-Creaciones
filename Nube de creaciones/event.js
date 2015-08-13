@@ -5,13 +5,18 @@
 			xhr.open('GET', datos.url, true);
 			xhr.responseType = 'blob';
 			xhr.onload = function(e) {
-				blob = new Blob([this.response]);
-				var client = new Dropbox.Client({ key: "b2r6yecvzwp382k", token: "lNg1OCSRRB0AAAAAAAAILmGCKpHT2k21aVHb4eHatND1JPRR9cHIALN5DuQDANIf"});
-				client.writeFile("BACKUP/" + datos.subforo + "/" + datos.tid + "/" + datos.nombre, blob, {noOverwrite: true}, function(error, stat){
-					if(error){
-						alert(error);
-					}
-				});
+				console.log(this.status);
+				if(this.status == 200){
+					blob = new Blob([this.response]);
+					var client = new Dropbox.Client({ key: "b2r6yecvzwp382k", token: "lNg1OCSRRB0AAAAAAAAILmGCKpHT2k21aVHb4eHatND1JPRR9cHIALN5DuQDANIf"});
+					client.writeFile("BACKUP/" + datos.subforo + "/" + datos.tid + "/" + datos.nombre, blob, {noOverwrite: true}, function(error, stat){
+						if(error){
+							alert(error);
+						}
+					});
+				}else{
+					chrome.runtime.sendMessage(datos);
+				}
 			};
 			xhr.send();
 		case "abrirDB":

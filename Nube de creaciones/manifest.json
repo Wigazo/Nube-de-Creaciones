@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 2,
   "name": "Nube de creaciones",
-  "version": "2.2",
+  "version": "2.2.1",
   "description": "Proporciona herramientas para facilitar el trabajo en 'Nube de creaciones'.",
   "icons": { "128": "icon.png" },
   "permissions": ["<all_urls>"],
