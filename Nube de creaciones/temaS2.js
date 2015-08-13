@@ -51,9 +51,9 @@ document.addEventListener('keydown', function(e) {
 
 var nav =  Array.prototype.slice.call(document.getElementsByClassName("nav"));
 nav  = nav.splice(0,nav.length/2);
-var subforo = nav[3].innerHTML;
+var subforo = nav[3].firstChild.innerHTML;
 if(nav.length == 5){
-	subforo += "/" + nav[4].innerHTML;
+	subforo += "/" + nav[4].firstChild.innerHTML;
 }
 var tid = location.pathname.split("/t")[1].split("-")[0].split("p")[0];
 
