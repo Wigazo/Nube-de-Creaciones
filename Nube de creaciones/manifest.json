@@ -1,0 +1,26 @@
+﻿{
+  "manifest_version": 2,
+  "name": "Nube de creaciones",
+  "version": "2.0",
+  "description": "Proporciona herramientas para facilitar el trabajo en 'Nube de creaciones'.",
+  "icons": { "128": "icon.png" },
+  "permissions": ["downloads"],
+  "background": {
+    "scripts": ["downloader.js"],
+    "persistent": false
+  },
+ "content_scripts": [
+    {
+      "matches": ["http://www.sporepedia2.com/t*"],
+      "js": ["temaS2.js"]
+    },
+    {
+      "matches": ["https://www.dropbox.com/home/BACKUP/*"],
+      "js": ["dropbox.js"]
+    },
+    {
+      "matches": ["*://www.mediafire.com/*"],
+      "js": ["mediafire.js"]
+    }
+  ]
+}
