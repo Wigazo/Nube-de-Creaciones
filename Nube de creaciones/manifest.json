@@ -1,13 +1,13 @@
 ﻿{
   "manifest_version": 2,
   "name": "Nube de creaciones",
-  "version": "2.1",
+  "version": "2.2",
   "description": "Proporciona herramientas para facilitar el trabajo en 'Nube de creaciones'.",
   "icons": { "128": "icon.png" },
-  "permissions": ["<all_urls>", "tabs"],
+  "permissions": ["<all_urls>"],
   "background": {
     "scripts": ["event.js", "thirdParty/dropbox.min.js"],
-    "persistent": true
+    "persistent": false
   },
  "content_scripts": [
     {

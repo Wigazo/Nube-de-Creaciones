@@ -15,7 +15,7 @@ function cerrarMenuDescargar(){
 
 function descargarImagen(){
 	descargasCount = parseInt(this.previousSibling.previousSibling.value);
-	chrome.runtime.sendMessage({accion: "subir", url: this.parentNode.previousSibling.src, nombre: "BACKUP/" + subforo + "/" + tid + "/" + descargasCount + ".png"});
+	chrome.runtime.sendMessage({accion: "subir", url: this.parentNode.previousSibling.src, subforo: subforo, tid: tid, nombre: descargasCount + ".png"});
 	descargasCount++;
 	this.parentNode.style.display = "none";
 }
@@ -24,7 +24,7 @@ function descargarMF(){
 	descargasCount = parseInt(this.previousSibling.previousSibling.value);
 	var a = document.createElement("a");
 	a.href = this.parentNode.previousSibling.href;
-	a.target = "#descargaMF=" + "BACKUP/" + subforo + "/" + tid + "/" + descargasCount;
+	a.target = "#descargaMF=" + subforo + "-" + tid + "-" + descargasCount;
 	var evt = document.createEvent("MouseEvents");    
 	evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
 	a.dispatchEvent(evt);
@@ -64,7 +64,7 @@ for(var i = 0; i < imagenes.length; i++){
 	var newDiv = document.createElement("div");
 	imagenes[i].parentNode.insertBefore(newDiv, imagenes[i].nextSibling);
 	imagenes[i].addEventListener('mouseover', abrirMenuDescargar);
-	newDiv.outerHTML = '<div style="position: absolute;display: none; padding: 15px;" class="forabg"><input class="inputbox" style="width: 100px;" onClick="this.select();"><br><button style="font-size: 17px; width: 100%;">SUBIR</button><a></div>';
+	newDiv.outerHTML = '<div style="position: absolute; display: none; margin: 0px; padding: 15px;" class="forabg"><input class="inputbox" style="width: 100px;" onClick="this.select();"><br><button style="font-size: 17px; width: 100%;">SUBIR</button><a></div>';
 	imagenes[i].addEventListener('mouseout', cerrarMenuDescargar);
 	imagenes[i].nextSibling.addEventListener('mouseover', abrirMenuDescargar);
 	imagenes[i].nextSibling.addEventListener('mouseout', cerrarMenuDescargar);
@@ -80,7 +80,7 @@ for(var i = 0; i < urls.length; i++){
 		var newDiv = document.createElement("div");
 		urls[i].parentNode.insertBefore(newDiv, urls[i].nextSibling);
 		urls[i].addEventListener('mouseover', abrirMenuDescargar);
-		newDiv.outerHTML = '<div style="position: absolute;display: none; padding: 15px;" class="forabg"><input class="inputbox" style="width: 100px;" onClick="this.select();"><br><button style="font-size: 17px; width: 100%;">SUBIR</button><a></div>';
+		newDiv.outerHTML = '<div style="position: absolute; display: none; margin: 0px; padding: 15px;" class="forabg"><input class="inputbox" style="width: 100px;" onClick="this.select();"><br><button style="font-size: 17px; width: 100%;">SUBIR</button><a></div>';
 		urls[i].addEventListener('mouseout', cerrarMenuDescargar);
 		urls[i].nextSibling.addEventListener('mouseover', abrirMenuDescargar);
 		urls[i].nextSibling.addEventListener('mouseout', cerrarMenuDescargar);
