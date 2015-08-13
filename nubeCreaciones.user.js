@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name 		Nube de creaciones
 // @author		Wigazo
-// @version		1.5.1
+// @version		1.6
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 	function abrirMenuDescargar(){
 		var elem = this;
-		if(elem.tagName == "IMG"){
+		if(elem.tagName != "DIV"){
 			elem = elem.nextSibling;
 			elem.getElementsByTagName("input")[0].value = descargasCount;
 		}
@@ -15,7 +15,7 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 	}
 	function cerrarMenuDescargar(){
 		var elem = this;
-		if(elem.tagName == "IMG") elem = elem.nextSibling;
+		if(elem.tagName != "DIV") elem = elem.nextSibling;
 		elem.style.display = "none";
 	}
 	function descargarImagen(){
@@ -25,6 +25,17 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 		iframe.name = "#descargaNC=" + descargasCount + ".png";
 		iframe.style.display = "none";
 		document.getElementsByTagName("body")[0].appendChild(iframe);
+		descargasCount++;
+		this.parentNode.style.display = "none";
+	}
+	function descargarMF(){
+		descargasCount = parseInt(this.previousSibling.previousSibling.value);
+		var a = document.createElement("a");
+		a.href = this.parentNode.previousSibling.href;
+		a.target = "#descargaMF=" + descargasCount;
+		var evt = document.createEvent("MouseEvents");    
+		evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+		a.dispatchEvent(evt);
 		descargasCount++;
 		this.parentNode.style.display = "none";
 	}
@@ -64,6 +75,22 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 		imagenes[i].nextSibling.addEventListener('mouseout', cerrarMenuDescargar);
 		imagenes[i].nextSibling.getElementsByTagName("button")[0].addEventListener('click', descargarImagen);
 	}
+	var urls = Array.prototype.slice.call(document.getElementsByClassName("postbody")[0].getElementsByClassName("content")[0].getElementsByTagName("a"));
+	for(var i = 0; i < urls.length; i++){
+		if(urls[i].href.indexOf("http://adf.ly/246619/") == 0){
+			urls[i].href = urls[i].href.split("http://adf.ly/246619/")[1];
+		}
+		if(urls[i].href.indexOf("http://www.mediafire.com/") == 0){
+			var newDiv = document.createElement("div");
+			urls[i].parentNode.insertBefore(newDiv, urls[i].nextSibling);
+			urls[i].addEventListener('mouseover', abrirMenuDescargar);
+			newDiv.outerHTML = '<div style="position: absolute;display: none; padding: 15px;" class="forabg"><input class="inputbox" style="width: 100px;" onClick="this.select();"><br><button style="font-size: 17px;">DESCARGAR</button><a></div>';
+			urls[i].addEventListener('mouseout', cerrarMenuDescargar);
+			urls[i].nextSibling.addEventListener('mouseover', abrirMenuDescargar);
+			urls[i].nextSibling.addEventListener('mouseout', cerrarMenuDescargar);
+			urls[i].nextSibling.getElementsByTagName("button")[0].addEventListener('click', descargarMF);
+		}
+	}
 	document.onkeydown = teclazo;
 }
 
@@ -72,6 +99,28 @@ if(window.name.indexOf("#descargaNC=") == 0){
 	a.download = window.name.split("descargaNC=")[1];
 	a.href = location.href;
 	a.dispatchEvent(new Event("click"));
+}
+
+if(window.name.indexOf("#descargaMF=") == 0){
+	if(typeof(document.getElementsByClassName("download_link")[0]) != "undefined"){
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', document.getElementsByClassName("download_link")[0].getElementsByTagName("a")[0].href, true);
+		xhr.responseType = 'blob';
+		xhr.onload = function(e) {
+		  if (this.status == 200) {
+			blob = new Blob([this.response]);
+			var a = document.createElement('a');
+			a.download = window.name.split("descargaMF=")[1] + "." + location.pathname.split(".")[1];
+			a.href =  window.URL.createObjectURL(blob);
+			a.dispatchEvent(new Event("click"));
+			window.close();
+		  }
+		};
+		xhr.send();
+	}else{
+		alert("No se pudo descargar. Posiblemente se haya caído. De lo contario, intenta descargar manualmente (otra posible causa es que tenga contraseña).");
+		window.close();
+	}
 }
 
 if(location.href.indexOf("https://www.dropbox.com/home/BACKUP/") == 0 && window.name.indexOf("#tid=") == 0){
