@@ -1,9 +1,33 @@
 // ==UserScript==
 // @name 		Nube de creaciones
-// @version		1.4.1
+// @author		Wigazo
+// @version		1.5
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
+	function abrirMenuDescargar(){
+		var elem = this;
+		if(elem.tagName == "IMG"){
+			elem = elem.nextSibling;
+			elem.getElementsByTagName("input")[0].value = descargasCount;
+		}
+		elem.style.display = "initial";
+	}
+	function cerrarMenuDescargar(){
+		var elem = this;
+		if(elem.tagName == "IMG") elem = elem.nextSibling;
+		elem.style.display = "none";
+	}
+	function descargarImagen(){
+		descargasCount = parseInt(this.previousSibling.previousSibling.value);
+		var iframe = document.createElement('iframe');
+		iframe.src = this.parentNode.previousSibling.src;
+		iframe.name = "#descargaNC=" + descargasCount + ".png";
+		iframe.style.display = "none";
+		document.getElementsByTagName("body")[0].appendChild(iframe);
+		descargasCount++;
+		this.parentNode.style.display = "none";
+	}
 	function teclazo(e) {
 		var evtobj = window.event? event : e
 		if (evtobj.keyCode == 66 && evtobj.ctrlKey){
@@ -21,15 +45,33 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 			location.href = document.getElementsByClassName("i_icon_edit")[0].parentNode.getAttribute("href") + "&tick=true"; 
 		}
 		if (evtobj.keyCode == 66 && evtobj.shiftKey){
-			var imagenes = Array.prototype.slice.call(document.getElementsByClassName("content")[0].getElementsByTagName("img"));
 			imagenes.forEach(function(entry) {
 				if(entry.getAttribute("src").indexOf(".imageshack.us/img") != -1) entry.setAttribute("src", "http://imageshack.com/a/" + entry.getAttribute("src").substring(entry.getAttribute("src").indexOf('.imageshack.us/')+15));
 			}); 
 			document.getElementsByClassName("post")[0].style.background = "#ffc246";
 		}
 	}
+	var descargasCount = 1;
 	var wDB;
+	var imagenes = Array.prototype.slice.call(document.getElementsByClassName("content")[0].getElementsByTagName("img"));
+	for(var i = 0; i < imagenes.length; i++){
+		var newDiv = document.createElement("div");
+		imagenes[i].parentNode.insertBefore(newDiv, imagenes[i].nextSibling);
+		imagenes[i].addEventListener('mouseover', abrirMenuDescargar);
+		newDiv.outerHTML = '<div style="position: absolute;display: none; padding: 15px;" class="forabg"><input class="inputbox" style="width: 100px;" onClick="this.select();"><br><button style="font-size: 17px;">DESCARGAR</button><a></div>';
+		imagenes[i].addEventListener('mouseout', cerrarMenuDescargar);
+		imagenes[i].nextSibling.addEventListener('mouseover', abrirMenuDescargar);
+		imagenes[i].nextSibling.addEventListener('mouseout', cerrarMenuDescargar);
+		imagenes[i].nextSibling.getElementsByTagName("button")[0].addEventListener('click', descargarImagen);
+	}
 	document.onkeydown = teclazo;
+}
+
+if(window.name.indexOf("#descargaNC=") == 0){
+	var a = document.createElement('a');
+	a.download = window.name.split("descargaNC=")[1];
+	a.href = location.href;
+	a.dispatchEvent(new Event("click"));
 }
 
 if(location.href.indexOf("https://www.dropbox.com/home/BACKUP/") == 0 && window.name.indexOf("#tid=") == 0){
