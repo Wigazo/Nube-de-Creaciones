@@ -1,7 +1,7 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name 		Nube de creaciones
 // @author		Wigazo
-// @version		1.6
+// @version		1.6.1
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
@@ -110,7 +110,7 @@ if(window.name.indexOf("#descargaMF=") == 0){
 		  if (this.status == 200) {
 			blob = new Blob([this.response]);
 			var a = document.createElement('a');
-			a.download = window.name.split("descargaMF=")[1] + "." + location.pathname.split(".")[1];
+			a.download = window.name.split("descargaMF=")[1] + "." + location.pathname.split(".")[location.pathname.split(".").length -1];
 			a.href =  window.URL.createObjectURL(blob);
 			a.dispatchEvent(new Event("click"));
 			window.close();
@@ -118,8 +118,10 @@ if(window.name.indexOf("#descargaMF=") == 0){
 		};
 		xhr.send();
 	}else{
-		alert("No se pudo descargar. Posiblemente se haya ca�do. De lo contario, intenta descargar manualmente (otra posible causa es que tenga contrase�a).");
-		window.close();
+		if(confirm("No se pudo descargar. Posiblemente se haya caído. De lo contario, intenta descargar manualmente (otra posible causa es que tenga contraseña).\n\n¿Desea abandonar la página=?")){
+			window.name = "";
+			window.close();
+		}
 	}
 }
 
