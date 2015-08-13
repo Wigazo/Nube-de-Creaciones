@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name 		Nube de creaciones
 // @author		Wigazo
-// @version		1.5
+// @version		1.5.1
 // ==/UserScript==
 
 if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
@@ -53,7 +53,7 @@ if(location.href.indexOf("http://www.sporepedia2.com/t") == 0){
 	}
 	var descargasCount = 1;
 	var wDB;
-	var imagenes = Array.prototype.slice.call(document.getElementsByClassName("content")[0].getElementsByTagName("img"));
+	var imagenes = Array.prototype.slice.call(document.getElementsByClassName("postbody")[0].getElementsByClassName("content")[0].getElementsByTagName("img"));
 	for(var i = 0; i < imagenes.length; i++){
 		var newDiv = document.createElement("div");
 		imagenes[i].parentNode.insertBefore(newDiv, imagenes[i].nextSibling);
