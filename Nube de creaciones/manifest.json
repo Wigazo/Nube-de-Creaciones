@@ -1,7 +1,7 @@
-﻿{
+{
   "manifest_version": 2,
   "name": "Nube de creaciones",
-  "version": "2.2.3",
+  "version": "2.3",
   "description": "Proporciona herramientas para facilitar el trabajo en 'Nube de creaciones'.",
   "icons": { "128": "icon.png" },
   "permissions": ["<all_urls>"],
@@ -18,5 +18,25 @@
       "matches": ["*://www.mediafire.com/*"],
       "js": ["mediafire.js"]
     }
-  ]
+  ],
+  "commands": {
+    "abrir-carpeta-dropbox": {
+      "suggested_key": {
+        "default": "Ctrl+B"
+      },
+      "description": "Abrir carpeta de Dropbox"
+    },
+    "poner-tick-tema": {
+      "suggested_key": {
+        "default": "Alt+B"
+      },
+      "description": "Poner tick a tema"
+    },
+    "corregir-url-imageshack": {
+      "suggested_key": {
+        "default": "Alt+Shift+B"
+      },
+      "description": "Corregir URL de ImageShack"
+    }
+  }
 }

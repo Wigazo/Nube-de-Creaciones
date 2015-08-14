@@ -1,4 +1,5 @@
-﻿function abrirMenuDescargar(){
+function abrirMenuDescargar(e){
+  console.log(e);
 	var elem = this;
 	if(elem.tagName != "DIV"){
 		elem = elem.nextSibling;
@@ -15,7 +16,7 @@ function cerrarMenuDescargar(){
 
 function descargarImagen(){
 	descargasCount = parseInt(this.previousSibling.previousSibling.value);
-	chrome.runtime.sendMessage({accion: "subir", url: this.parentNode.previousSibling.src, subforo: subforo, tid: tid, nombre: descargasCount + ".png"});
+	chrome.runtime.sendMessage({accion: "subir", url: this.parentNode.previousSibling.src, tid: tid, nombre: descargasCount + ".png"});
 	descargasCount++;
 	this.parentNode.style.display = "none";
 }
@@ -24,7 +25,7 @@ function descargarMF(){
 	descargasCount = parseInt(this.previousSibling.previousSibling.value);
 	var a = document.createElement("a");
 	a.href = this.parentNode.previousSibling.href;
-	a.target = "#descargaMF=" + subforo + "-" + tid + "-" + descargasCount;
+	a.target = "#descargaMF=" + tid + "-" + descargasCount;
 	var evt = document.createEvent("MouseEvents");    
 	evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
 	a.dispatchEvent(evt);
@@ -32,29 +33,22 @@ function descargarMF(){
 	this.parentNode.style.display = "none";
 }
 
-document.addEventListener('keydown', function(e) {
-	var evtobj = window.event? event : e
-	if (evtobj.keyCode == 66 && evtobj.ctrlKey){
-		chrome.runtime.sendMessage({accion: "abrirDB", subforo: subforo, tid: tid});
-	}
-	if (evtobj.keyCode == 66 && evtobj.altKey){
-		location.href = document.getElementsByClassName("i_icon_edit")[0].parentNode.getAttribute("href") + "&tick=true"; 
-	}
-	if (evtobj.keyCode == 66 && evtobj.shiftKey){
-		imagenes.forEach(function(entry) {
-			if(entry.getAttribute("src").indexOf(".imageshack.us/img") != -1) entry.setAttribute("src", "http://imageshack.com/a/" + entry.getAttribute("src").substring(entry.getAttribute("src").indexOf('.imageshack.us/')+15));
-		}); 
-		document.getElementsByClassName("post")[0].style.background = "#ffc246";
+chrome.runtime.onMessage.addListener(function(comando, sender, sendResponse) {
+	switch(comando){
+		case "abrir-carpeta-dropbox":
+		  chrome.runtime.sendMessage({accion: "abrirDB", tid: tid});
+		  break;
+		case "poner-tick-tema":
+		  location.href = document.getElementsByClassName("i_icon_edit")[0].parentNode.getAttribute("href") + "&tick=true"; 
+      break;
+    case "corregir-url-imageshack":
+  		imagenes.forEach(function(entry) {
+  			if(entry.getAttribute("src").indexOf(".imageshack.us/img") != -1) entry.setAttribute("src", "http://imageshack.com/a/" + entry.getAttribute("src").substring(entry.getAttribute("src").indexOf('.imageshack.us/')+15));
+  		}); 
+  		document.getElementsByClassName("post")[0].style.background = "#ffc246";
 	}
 });
 
-
-var nav =  Array.prototype.slice.call(document.getElementsByClassName("nav"));
-nav  = nav.splice(0,nav.length/2);
-var subforo = nav[3].firstChild.innerHTML;
-if(nav.length == 5){
-	subforo += "/" + nav[4].firstChild.innerHTML;
-}
 var tid = location.pathname.split("/t")[1].split("-")[0].split("p")[0];
 
 var descargasCount = 1;
