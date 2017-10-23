@@ -1,0 +1,28 @@
+{
+  "name": "nube-de-creaciones",
+  "version": "2.3.1",
+  "description": "Extensión de chrome para la nube de creaciones de la Sporepedia2",
+  "main": "index.js",
+  "scripts": {
+    "dev": "set NODE_ENV=development&& node node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "set NODE_ENV=development&& node node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "set NODE_ENV=development&& node node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "set NODE_ENV=production&& node node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wigazo/Nube-de-Creaciones.git"
+  },
+  "author": "Wigazo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wigazo/Nube-de-Creaciones/issues"
+  },
+  "homepage": "https://github.com/Wigazo/Nube-de-Creaciones#readme",
+  "devDependencies": {
+    "laravel-mix": "^1.5.1"
+  },
+  "dependencies": {
+    "dropbox": "^2.5.12"
+  }
+}

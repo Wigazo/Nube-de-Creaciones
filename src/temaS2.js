@@ -1,5 +1,8 @@
+import * as Dropbox from 'dropbox';
+let dropbox = new Dropbox({accessToken: process.env.MIX_DROPBOX_TOKEN});
+
 function abrirMenuDescargar(e){
-  console.log(e);
+
 	var elem = this;
 	if(elem.tagName != "DIV"){
 		elem = elem.nextSibling;
@@ -16,7 +19,7 @@ function cerrarMenuDescargar(){
 
 function descargarImagen(){
 	descargasCount = parseInt(this.previousSibling.previousSibling.value);
-	chrome.runtime.sendMessage({accion: "subir", url: this.parentNode.previousSibling.src, tid: tid, nombre: descargasCount + ".png"});
+	chrome.runtime.sendMessage({accion: 'subir', url: this.parentNode.previousSibling.src, tid: tid, nombre: descargasCount + ".png"});
 	descargasCount++;
 	this.parentNode.style.display = "none";
 }
@@ -33,10 +36,14 @@ function descargarMF(){
 	this.parentNode.style.display = "none";
 }
 
+function abrirDB(datos) {
+	
+}
+
 chrome.runtime.onMessage.addListener(function(comando, sender, sendResponse) {
 	switch(comando){
 		case "abrir-carpeta-dropbox":
-		  chrome.runtime.sendMessage({accion: "abrirDB", tid: tid});
+			chrome.runtime.sendMessage({accion: "abrirDB", tid: tid});
 		  break;
 		case "poner-tick-tema":
 		  location.href = document.getElementsByClassName("i_icon_edit")[0].parentNode.getAttribute("href") + "&tick=true"; 
